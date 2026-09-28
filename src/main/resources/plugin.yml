@@ -1,0 +1,11 @@
+name: AxiosEconomie
+version: '${version}'
+
+main: fr.kilian.economy.Main
+api-version: '26.3'
+load: POSTWORLD
+
+authors: [ TablePasDroite ]
+
+depend:
+  - AxiosAPI

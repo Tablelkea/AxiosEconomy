@@ -1,5 +1,8 @@
 package fr.kilian.economy.profile;
 
+import fr.kilian.economy.exception.InsufficientBalanceException;
+import fr.kilian.economy.exception.InsufficientBankBalanceException;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -49,7 +52,7 @@ public final class EconomyProfile {
         }
 
         if(balance < amount){
-            throw new IllegalArgumentException("amount cannot be greater than balance");
+            throw new InsufficientBalanceException("amount cannot be greater than balance");
         }
 
         balance -= amount;
@@ -69,7 +72,7 @@ public final class EconomyProfile {
         }
 
         if(amount > bankBalance){
-            throw new IllegalArgumentException("amount cannot be greater than bankBalance");
+            throw new InsufficientBankBalanceException("amount cannot be greater than bankBalance");
         }
 
         bankBalance -= amount;
@@ -97,7 +100,7 @@ public final class EconomyProfile {
                 synchronized (receiver){
 
                     if(this.balance < amount){
-                        throw new IllegalStateException("insufficient balance");
+                        throw new InsufficientBalanceException("insufficient balance");
                     }
 
                     balance -= amount;

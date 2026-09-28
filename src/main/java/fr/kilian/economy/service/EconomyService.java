@@ -3,7 +3,6 @@ package fr.kilian.economy.service;
 import fr.kilian.api.component.ComponentContainer;
 import fr.kilian.api.player.PlayerProfile;
 import fr.kilian.api.player.PlayerService;
-import fr.kilian.economy.EconomyComponents;
 import fr.kilian.economy.profile.EconomyProfile;
 
 import java.util.Objects;
@@ -11,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static fr.kilian.economy.EconomyComponents.PROFILE;
+import static fr.kilian.economy.components.EconomyComponents.PROFILE;
 
 public final class EconomyService {
 

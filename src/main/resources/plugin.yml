@@ -9,3 +9,14 @@ authors: [ TablePasDroite ]
 
 depend:
   - AxiosAPI
+commands:
+  balance:
+    description: Show your current balance
+
+  pay:
+    description: Send money to another player
+    usage: /pay <player> <amount>
+
+  bank:
+    description: Manage your bank account
+    usage: /bank [deposit|withdraw] [amount]

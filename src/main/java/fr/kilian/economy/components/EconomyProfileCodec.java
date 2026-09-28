@@ -1,4 +1,4 @@
-package fr.kilian.economy;
+package fr.kilian.economy.components;
 
 import fr.kilian.api.component.ComponentCodec;
 import fr.kilian.economy.profile.EconomyProfile;

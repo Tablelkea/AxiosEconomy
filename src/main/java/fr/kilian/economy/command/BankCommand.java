@@ -1,7 +1,9 @@
 package fr.kilian.economy.command;
 
+import fr.kilian.economy.Main;
 import fr.kilian.economy.exception.InsufficientBalanceException;
 import fr.kilian.economy.exception.InsufficientBankBalanceException;
+import fr.kilian.economy.money.MoneyFormatter;
 import fr.kilian.economy.service.EconomyService;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,6 +19,8 @@ import java.util.concurrent.CompletionException;
 import java.util.logging.Level;
 
 public final class BankCommand implements CommandExecutor {
+
+    private final MoneyFormatter moneyFormatter = Main.getMoneyFormatter();
 
     private final JavaPlugin javaPlugin;
     private final EconomyService economyService;
@@ -82,7 +86,7 @@ public final class BankCommand implements CommandExecutor {
         long amount;
 
         try {
-            amount = Long.parseLong(rawAmount);
+            amount = moneyFormatter.parse(rawAmount);
         } catch (NumberFormatException e) {
             player.sendMessage("Invalid amount");
             return OptionalLong.empty();
@@ -131,7 +135,7 @@ public final class BankCommand implements CommandExecutor {
                                     return;
                                 }
 
-                                player.sendMessage("Bank balance: " + balance);
+                                player.sendMessage("Bank balance: " + moneyFormatter.format(balance));
 
                             });
                 });
@@ -178,7 +182,7 @@ public final class BankCommand implements CommandExecutor {
 
                                 }
 
-                                player.sendMessage("Deposited " + amount + " into your bank");
+                                player.sendMessage("Deposited " + moneyFormatter.format(amount) + " into your bank");
 
                             });
                 });
@@ -223,7 +227,7 @@ public final class BankCommand implements CommandExecutor {
                                     return;
                                 }
 
-                                player.sendMessage("You withdraw " + amount + " from your bank");
+                                player.sendMessage("You withdraw " + moneyFormatter.format(amount) + " from your bank");
 
                             });
 

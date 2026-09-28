@@ -1,5 +1,7 @@
 package fr.kilian.economy.command;
 
+import fr.kilian.economy.Main;
+import fr.kilian.economy.money.MoneyFormatter;
 import fr.kilian.economy.service.EconomyService;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +15,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class BalanceCommand implements CommandExecutor {
+
+    private final MoneyFormatter moneyFormatter = Main.getMoneyFormatter();
 
     private final JavaPlugin javaPlugin;
     private final EconomyService economyService;
@@ -62,7 +66,7 @@ public class BalanceCommand implements CommandExecutor {
                                             return;
                                         }
 
-                                        player.sendMessage("Balance: " + balance);
+                                        player.sendMessage("Balance: " + moneyFormatter.format(balance));
                                     });
                         }
                 );

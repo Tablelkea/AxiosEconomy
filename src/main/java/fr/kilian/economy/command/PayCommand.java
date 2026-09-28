@@ -1,6 +1,8 @@
 package fr.kilian.economy.command;
 
+import fr.kilian.economy.Main;
 import fr.kilian.economy.exception.InsufficientBalanceException;
+import fr.kilian.economy.money.MoneyFormatter;
 import fr.kilian.economy.service.EconomyService;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -15,6 +17,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class PayCommand implements CommandExecutor {
+
+    private final MoneyFormatter moneyFormatter = Main.getMoneyFormatter();
 
     private JavaPlugin javaPlugin;
     private EconomyService economyService;
@@ -59,7 +63,7 @@ public class PayCommand implements CommandExecutor {
         }
 
         try{
-            amount = Long.parseLong(args[1]);
+            amount = moneyFormatter.parse(args[1]);
         } catch (NumberFormatException e) {
             player.sendMessage("invalid amount");
             return true;
@@ -100,10 +104,10 @@ public class PayCommand implements CommandExecutor {
                                     return;
                                 }
 
-                                player.sendMessage("You send " + amount + " to " + receiver.getName());
+                                player.sendMessage("You send " + moneyFormatter.format(amount) + " to " + receiver.getName());
 
                                 if(receiver.isOnline()){
-                                    receiver.sendMessage("You received " + amount + " from " + player.getName());
+                                    receiver.sendMessage("You received " + moneyFormatter.format(amount) + " from " + player.getName());
                                 }
 
                     });

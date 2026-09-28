@@ -6,6 +6,7 @@ import fr.kilian.economy.command.BankCommand;
 import fr.kilian.economy.command.PayCommand;
 import fr.kilian.economy.components.EconomyComponents;
 import fr.kilian.economy.components.EconomyProfileCodec;
+import fr.kilian.economy.money.MoneyFormatter;
 import fr.kilian.economy.service.EconomyService;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -17,11 +18,14 @@ import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
+    private static MoneyFormatter moneyFormatter;
     private AxiosApi axiosApi;
     private EconomyService economyService;
 
     @Override
     public void onEnable() {
+
+        moneyFormatter = new MoneyFormatter();
 
         RegisteredServiceProvider<AxiosApi> provider =
                 getServer()
@@ -95,5 +99,9 @@ public final class Main extends JavaPlugin {
 
         return true;
 
+    }
+
+    public static MoneyFormatter getMoneyFormatter(){
+        return moneyFormatter;
     }
 }

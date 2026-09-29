@@ -2,6 +2,7 @@ package fr.kilian.economy.menu;
 
 import fr.kilian.economy.money.MoneyFormatter;
 import fr.kilian.economy.service.EconomyService;
+import fr.kilian.economy.sprite.EconomySprites;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -101,6 +102,11 @@ public final class BankMenu {
                                 createWithdrawItem()
                         );
 
+                        menu.setItem(
+                                CLOSE_SLOT,
+                                createCloseItem()
+                        );
+
                         fillBackground(menu);
 
                     });
@@ -114,21 +120,39 @@ public final class BankMenu {
         ItemStack item = new ItemStack(Material.CHEST);
         ItemMeta meta = item.getItemMeta();
 
+        Component title = EconomySprites.BANK
+                .component()
+                .append(Component.space())
+                        .append(
+                                Component.text("Bank", NamedTextColor.AQUA)
+                                        .decoration(TextDecoration.ITALIC, false)
+                        );
+
         meta.displayName(
-                Component.text("Bank", NamedTextColor.AQUA)
-                        .decoration(TextDecoration.ITALIC, false)
+                title
         );
 
-        meta.lore(List.of(
-                Component.empty(),
-                Component.text("Stored balance", NamedTextColor.GRAY)
-                        .decoration(TextDecoration.ITALIC, false),
-
-                Component.text(
+        Component balanceLine = Component.empty()
+                .append(
+                        Component.text(
                                 moneyFormatter.format(balance),
                                 NamedTextColor.AQUA
                         )
-                        .decoration(TextDecoration.ITALIC, false)
+                )
+                .append(Component.space())
+                .append(
+                        EconomySprites.COIN.component()
+                                .color(NamedTextColor.WHITE)
+                )
+                .decoration(TextDecoration.ITALIC, false);
+
+        meta.lore(List.of(
+                Component.empty(),
+
+                Component.text("Stored balance", NamedTextColor.GRAY)
+                        .decoration(TextDecoration.ITALIC, false),
+
+                balanceLine
         ));
 
         item.setItemMeta(meta);
@@ -141,9 +165,15 @@ public final class BankMenu {
         ItemStack item = new ItemStack(Material.GOLD_INGOT);
         ItemMeta meta = item.getItemMeta();
 
+        Component title = EconomySprites.WALLET
+                .component()
+                .append(
+                        Component.text(" Wallet", NamedTextColor.GOLD)
+                                .decoration(TextDecoration.ITALIC, false)
+                );
+
         meta.displayName(
-                Component.text("Wallet", NamedTextColor.GOLD)
-                        .decoration(TextDecoration.ITALIC, false)
+                title
         );
 
         meta.lore(List.of(
@@ -156,6 +186,8 @@ public final class BankMenu {
                                 NamedTextColor.YELLOW
                         )
                         .decoration(TextDecoration.ITALIC, false)
+                        .append(Component.space())
+                        .append(EconomySprites.COIN.component())
         ));
 
         item.setItemMeta(meta);
@@ -173,9 +205,16 @@ public final class BankMenu {
         ItemStack item = new ItemStack(Material.EMERALD);
         ItemMeta meta = item.getItemMeta();
 
+        Component title = EconomySprites.DEPOSIT
+                .component()
+                .append(Component.space())
+                        .append(
+                                Component.text("Deposit", NamedTextColor.GREEN)
+                                        .decoration(TextDecoration.ITALIC, false)
+                        );
+
         meta.displayName(
-                Component.text("Deposit", NamedTextColor.GREEN)
-                        .decoration(TextDecoration.ITALIC, false)
+                title
         );
 
         meta.lore(List.of(
@@ -211,9 +250,16 @@ public final class BankMenu {
         ItemStack item = new ItemStack(Material.REDSTONE);
         ItemMeta meta = item.getItemMeta();
 
+        Component title = EconomySprites.WITHDRAW
+                .component()
+                .append(Component.space())
+                        .append(
+                                Component.text("Withdraw", NamedTextColor.RED)
+                                .decoration(TextDecoration.ITALIC, false)
+                        );
+
         meta.displayName(
-                Component.text("Withdraw", NamedTextColor.RED)
-                        .decoration(TextDecoration.ITALIC, false)
+                title
         );
 
         meta.lore(List.of(
@@ -294,7 +340,10 @@ public final class BankMenu {
                                         NamedTextColor.GOLD
                                 )
                         )
-                        .decoration(TextDecoration.ITALIC, false),
+                        .decoration(TextDecoration.ITALIC, false)
+                        .append(Component.space())
+                        .append(EconomySprites.COIN.component()),
+
 
                 Component.text("Bank: ", NamedTextColor.GRAY)
                         .append(
@@ -303,7 +352,9 @@ public final class BankMenu {
                                         NamedTextColor.AQUA
                                 )
                         )
-                        .decoration(TextDecoration.ITALIC, false),
+                        .decoration(TextDecoration.ITALIC, false)
+                        .append(Component.space())
+                        .append(EconomySprites.COIN.component()),
 
                 Component.empty(),
 
@@ -315,6 +366,8 @@ public final class BankMenu {
                                 NamedTextColor.YELLOW
                         )
                         .decoration(TextDecoration.ITALIC, false)
+                        .append(Component.space())
+                        .append(EconomySprites.COIN.component())
         ));
 
         item.setItemMeta(meta);
@@ -332,6 +385,38 @@ public final class BankMenu {
                 inventory.setItem(slot, filler);
             }
         }
+    }
+
+    private ItemStack createCloseItem() {
+
+        ItemStack item = new ItemStack(Material.BARRIER);
+        ItemMeta meta = item.getItemMeta();
+
+        Component title =
+                EconomySprites.CLOSE.component()
+                        .append(Component.space())
+                        .append(
+                                Component.text(
+                                        "Close",
+                                        NamedTextColor.RED
+                                )
+                        )
+                        .decoration(TextDecoration.ITALIC, false);
+
+        meta.displayName(title);
+
+        meta.lore(List.of(
+                Component.empty(),
+                Component.text(
+                                "Click to close the bank",
+                                NamedTextColor.GRAY
+                        )
+                        .decoration(TextDecoration.ITALIC, false)
+        ));
+
+        item.setItemMeta(meta);
+
+        return item;
     }
 
 }

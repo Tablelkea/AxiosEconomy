@@ -1,11 +1,12 @@
 package fr.kilian.economy;
 
 import fr.kilian.api.AxiosApi;
-import fr.kilian.economy.command.BalanceCommand;
-import fr.kilian.economy.command.BankCommand;
-import fr.kilian.economy.command.PayCommand;
+import fr.kilian.economy.command.*;
 import fr.kilian.economy.components.EconomyComponents;
 import fr.kilian.economy.components.EconomyProfileCodec;
+import fr.kilian.economy.menu.BankActionManager;
+import fr.kilian.economy.menu.BankMenu;
+import fr.kilian.economy.menu.BankMenuListener;
 import fr.kilian.economy.money.MoneyFormatter;
 import fr.kilian.economy.service.EconomyService;
 import org.bukkit.command.CommandExecutor;
@@ -18,14 +19,15 @@ import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
-    private static MoneyFormatter moneyFormatter;
+    private BankMenu bankMenu;
+    private MoneyFormatter moneyFormatter;
     private AxiosApi axiosApi;
     private EconomyService economyService;
+    private static Main instance;
+    private BankActionManager bankActionManager;
 
     @Override
     public void onEnable() {
-
-        moneyFormatter = new MoneyFormatter();
 
         RegisteredServiceProvider<AxiosApi> provider =
                 getServer()
@@ -48,6 +50,19 @@ public final class Main extends JavaPlugin {
 
         economyService = new EconomyService(axiosApi.players());
 
+        moneyFormatter = new MoneyFormatter();
+        bankMenu = new BankMenu(this, economyService, moneyFormatter);
+        instance = this;
+        bankActionManager = new BankActionManager();
+
+        getServer().getPluginManager().registerEvents(new BankMenuListener(
+                moneyFormatter,
+                bankActionManager,
+                economyService,
+                this,
+                bankMenu
+        ), this);
+
         // Plugin startup logic
 
         if(!registerCommand(
@@ -66,10 +81,29 @@ public final class Main extends JavaPlugin {
 
         if(!registerCommand(
                 "bank",
-                new BankCommand(this, economyService)
+                new BankCommand(this, economyService, bankMenu)
         )){
             return;
         }
+
+        if(!registerCommand(
+                "setbalance",
+                new SetBalanceCommand(this, economyService, moneyFormatter)
+        )){
+            return;
+        }
+
+        if(!registerCommand(
+                "checkbalance",
+                new CheckBalanceCommand(this, economyService, moneyFormatter)
+        )){
+            return;
+        }
+
+        if(!registerCommand(
+                "addmoney",
+                new AddMoneyCommand(this, economyService, moneyFormatter)
+        ));
 
     }
 
@@ -101,7 +135,13 @@ public final class Main extends JavaPlugin {
 
     }
 
-    public static MoneyFormatter getMoneyFormatter(){
+    public static Main getInstance(){
+
+        return instance;
+
+    }
+
+    public MoneyFormatter getMoneyFormatter(){
         return moneyFormatter;
     }
 }

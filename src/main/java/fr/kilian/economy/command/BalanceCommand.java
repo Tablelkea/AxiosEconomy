@@ -16,7 +16,7 @@ import java.util.logging.Level;
 
 public class BalanceCommand implements CommandExecutor {
 
-    private final MoneyFormatter moneyFormatter = Main.getMoneyFormatter();
+    private final MoneyFormatter moneyFormatter = Main.getInstance().getMoneyFormatter();
 
     private final JavaPlugin javaPlugin;
     private final EconomyService economyService;

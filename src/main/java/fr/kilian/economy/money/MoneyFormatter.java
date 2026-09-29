@@ -1,5 +1,7 @@
 package fr.kilian.economy.money;
 
+import net.kyori.adventure.text.Component;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;

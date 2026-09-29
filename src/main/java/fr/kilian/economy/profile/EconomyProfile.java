@@ -60,8 +60,16 @@ public final class EconomyProfile {
 
     public synchronized void depositToBank(long amount){
 
-        deposit(amount);
-        balance -= amount;
+        if(amount <= 0){
+            throw new IllegalArgumentException("amount cannot be greater than 0");
+        }
+
+        if(amount > balance){
+            throw new InsufficientBalanceException("amount cannot be greater than balance");
+        }
+
+        withdraw(amount);
+        bankBalance += amount;
 
     }
 
@@ -75,8 +83,8 @@ public final class EconomyProfile {
             throw new InsufficientBankBalanceException("amount cannot be greater than bankBalance");
         }
 
+        deposit(amount);
         bankBalance -= amount;
-        balance += amount;
 
     }
 

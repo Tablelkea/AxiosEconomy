@@ -3,6 +3,7 @@ package fr.kilian.economy.command;
 import fr.kilian.economy.Main;
 import fr.kilian.economy.exception.InsufficientBalanceException;
 import fr.kilian.economy.exception.InsufficientBankBalanceException;
+import fr.kilian.economy.menu.BankMenu;
 import fr.kilian.economy.money.MoneyFormatter;
 import fr.kilian.economy.service.EconomyService;
 import org.bukkit.command.Command;
@@ -20,18 +21,21 @@ import java.util.logging.Level;
 
 public final class BankCommand implements CommandExecutor {
 
-    private final MoneyFormatter moneyFormatter = Main.getMoneyFormatter();
+    private final MoneyFormatter moneyFormatter = Main.getInstance().getMoneyFormatter();
 
+    private final BankMenu bankMenu;
     private final JavaPlugin javaPlugin;
     private final EconomyService economyService;
 
     public BankCommand(
             JavaPlugin javaPlugin,
-            EconomyService economyService
+            EconomyService economyService,
+            BankMenu bankMenu
     ) {
 
         this.javaPlugin = Objects.requireNonNull(javaPlugin, "javaPlugin cannot be null");
         this.economyService = Objects.requireNonNull(economyService, "economyService cannot be null");
+        this.bankMenu = Objects.requireNonNull(bankMenu, "bankMenu cannot be null");
 
     }
 
@@ -118,7 +122,7 @@ public final class BankCommand implements CommandExecutor {
 
     private void handleBalance(Player player){
 
-        UUID uniqueId = player.getUniqueId();
+        /*UUID uniqueId = player.getUniqueId();
 
         economyService.getBankBalance(uniqueId).whenComplete(
                 (balance, throwable) -> {
@@ -138,7 +142,9 @@ public final class BankCommand implements CommandExecutor {
                                 player.sendMessage("Bank balance: " + moneyFormatter.format(balance));
 
                             });
-                });
+                });*/
+
+        bankMenu.open(player);
 
     }
 

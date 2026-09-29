@@ -2,7 +2,7 @@ name: AxiosEconomie
 version: '${version}'
 
 main: fr.kilian.economy.Main
-api-version: '26.3'
+api-version: '1.21.10'
 load: POSTWORLD
 
 authors: [ TablePasDroite ]
@@ -20,3 +20,28 @@ commands:
   bank:
     description: Manage your bank account
     usage: /bank [deposit|withdraw] [amount]
+
+  addmoney:
+    description: add money to player's balance
+    usage: /addmoney <player> <amount>
+    permission: economy.admin.addmoney
+
+  checkbalance:
+    description: Check another player's balance
+    usage: /checkbalance <player>
+    permission: economy.admin.checkbalance
+  setbalance:
+    description: set another player's balance
+    usage: /setbalance <player> <amount>
+    permission: economy.admin.setbalance
+
+permissions:
+  economy.admin.addmoney:
+    description: Allows adding money to a player's balance
+    default: op
+  economy.admin.checkbalance:
+    description: Allows checking a player's balance
+    default: op
+  economy.admin.setbalance:
+    description: Allows setting a player's balance
+    default: op
